@@ -4,9 +4,14 @@
   import { scoreEngine } from "zkcollector-contract";
   import { verify } from "o1js";
   import Loading from "./lib/Loading.svelte";
+  import ModalDialog from "./lib/Modal.svelte";
+
+  
 
   let fileInput:any, verificationKey:any;
   let bLoading = true;
+  let showModal=false
+
 
   onMount(async () => {
     const result = await scoreEngine.compile();
@@ -46,13 +51,29 @@
     };
   }
 
+  let imageSrc:string,content:string,btnText:string
+  function openSucessModel(result:boolean){
+    btnText="Close"
+    if(result) {
+      imageSrc="./valid.png"
+      content="Proof Verification PASSED"
+    }else{
+      imageSrc="./invalid.svg"
+      content="Proof Verification FAILED"
+    }
+    showModal=true
+  }
+
   async function onValidate() {
     validationStatus = "LOADING" 
     validationResult = await verify(proof, verificationKey);
     // await new Promise(resolve => setTimeout(resolve, 5000));
     validationStatus = "RESULT" 
- 
+    
+    openSucessModel(validationResult);
+
     console.log(`verification result: ${validationResult}`);
+
   }
 </script>
 
@@ -242,4 +263,8 @@
       />
     </div>
   </div>
+{/if}
+
+{#if showModal}
+  <ModalDialog imageSrc={imageSrc} content={content} btnText={btnText}  on:click={() => {  showModal=false }  } />
 {/if}
