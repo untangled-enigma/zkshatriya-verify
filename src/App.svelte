@@ -1,12 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
+  import './index.css'
   import { scoreEngine } from "zkcollector-contract";
-  import "./lib/Tailwind.css";
   import { verify } from "o1js";
   import Loading from "./lib/Loading.svelte";
 
-  let fileInput, verificationKey;
+  let fileInput:any, verificationKey:any;
   let bLoading = true;
 
   onMount(async () => {
@@ -16,7 +15,7 @@
   });
 
   /// File data vars
-  let address, score, root, proof;
+  let address:string, score:string, root:string, proof:any;
 
   let validationStatus = "INIT";
   let validationResult = false; // "INIT", "LOADING" , "RESULT"
@@ -33,10 +32,8 @@
     reader.readAsText(file);
 
     reader.onload = (event) => {
+      //@ts-ignore
       proof = JSON.parse(event.target.result);
-      // Process the parsed JSON data here
-      //  console.log(proof);
-
       address = proof.publicInput[0];
       score = proof.publicInput[1];
 
@@ -80,13 +77,13 @@
             <input
               bind:files={fileInput}
               type="file"
-              class="cursor-pointer py-2 px-4 flex justify-center items-center bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-gray-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+              class="cursor-pointer py-2 px-4 flex justify-center items-center bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-gray-200 text-white w-4/5 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
             />
 
             <button
               type="button"
               on:click={readProofFile}
-              class="mx-2 py-2 px-4 flex justify-center items-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 w-12 h-12 rounded-lg"
+              class="mx-2 py-2 px-4 flex justify-center items-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
             >
               <svg
                 width="20"
@@ -146,7 +143,7 @@
         
             <div class="flex flex-row">
             <svg
-                class="w-1/6"
+                class="max-w-9"
                 viewBox="0 0 117 117"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +181,7 @@
               <div class="flex flex-row">
 
               <svg
-                class="w-1/6"
+                class="max-w-9"
                 viewBox="0 0 48 48"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
